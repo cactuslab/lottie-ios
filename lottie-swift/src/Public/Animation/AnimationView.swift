@@ -259,7 +259,7 @@ final public class AnimationView: LottieView {
    
    - Parameter completion: An optional completion closure to be called when the animation completes playing.
    */
-  public func play(completion: LottieCompletionBlock? = nil) {
+  public func play(onStart: LottieBlock? = nil, completion: LottieCompletionBlock? = nil) {
     guard let animation = animation else {
       return
     }
@@ -267,6 +267,7 @@ final public class AnimationView: LottieView {
     /// Build a context for the animation.
     let context = AnimationContext(playFrom: CGFloat(animation.startFrame),
                                    playTo: CGFloat(animation.endFrame),
+                                   onStart: onStart,
                                    closure: completion)
     removeCurrentAnimation()
     addNewAnimationForContext(context)
@@ -283,6 +284,7 @@ final public class AnimationView: LottieView {
   public func play(fromProgress: AnimationProgressTime? = nil,
                    toProgress: AnimationProgressTime,
                    loopMode: LottieLoopMode? = nil,
+                   onStart: LottieBlock? = nil,
                    completion: LottieCompletionBlock? = nil) {
     guard let animation = animation else {
       return
@@ -295,6 +297,7 @@ final public class AnimationView: LottieView {
     }
     let context = AnimationContext(playFrom: animation.frameTime(forProgress: fromProgress ?? currentProgress),
                                    playTo: animation.frameTime(forProgress: toProgress),
+                                   onStart: onStart,
                                    closure: completion)
     addNewAnimationForContext(context)
   }
@@ -310,6 +313,7 @@ final public class AnimationView: LottieView {
   public func play(fromFrame: AnimationFrameTime? = nil,
                    toFrame: AnimationFrameTime,
                    loopMode: LottieLoopMode? = nil,
+                   onStart: LottieBlock? = nil,
                    completion: LottieCompletionBlock? = nil) {
     removeCurrentAnimation()
     if let loopMode = loopMode {
@@ -319,6 +323,7 @@ final public class AnimationView: LottieView {
     
     let context = AnimationContext(playFrom: fromFrame ?? currentProgress,
                                    playTo: toFrame,
+                                   onStart: onStart,
                                    closure: completion)
     addNewAnimationForContext(context)
   }
@@ -340,6 +345,7 @@ final public class AnimationView: LottieView {
   public func play(fromMarker: String? = nil,
                    toMarker: String,
                    loopMode: LottieLoopMode? = nil,
+                   onStart: LottieBlock? = nil,
                    completion: LottieCompletionBlock? = nil) {
     
     guard let animation = animation, let markers = animation.markerMap, let to = markers[toMarker] else {
@@ -361,6 +367,7 @@ final public class AnimationView: LottieView {
     
     let context = AnimationContext(playFrom: fromTime,
                                    playTo: CGFloat(to.frameTime),
+                                   onStart: onStart,
                                    closure: completion)
     addNewAnimationForContext(context)
   }
@@ -889,6 +896,7 @@ final public class AnimationView: LottieView {
     /// Make a new context, stealing the completion block from the previous.
     let newContext = AnimationContext(playFrom: animationContext.playFrom,
                                       playTo: animationContext.playTo,
+                                      onStart: animationContext.closure.onStartBlock,
                                       closure: animationContext.closure.completionBlock)
     
     /// Remove current animation, and freeze the current frame.
