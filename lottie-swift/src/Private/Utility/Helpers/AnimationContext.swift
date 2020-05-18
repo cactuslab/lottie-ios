@@ -12,14 +12,18 @@ import QuartzCore
 /// A completion block for animations. `true` is passed in if the animation completed playing.
 public typealias LottieCompletionBlock = (Bool) -> Void
 
+/// A block for callbacks.
+public typealias LottieBlock = () -> Void
+
 struct AnimationContext {
 
   init(playFrom: CGFloat,
        playTo: CGFloat,
+       onStart: LottieBlock?,
        closure: LottieCompletionBlock?) {
     self.playTo = playTo
     self.playFrom = playFrom
-    self.closure = AnimationCompletionDelegate(completionBlock: closure)
+    self.closure = AnimationCompletionDelegate(onStartBlock: onStart, completionBlock: closure)
   }
 
   var playFrom: CGFloat
@@ -36,7 +40,8 @@ enum AnimationContextState {
 
 class AnimationCompletionDelegate: NSObject, CAAnimationDelegate {
   
-  init(completionBlock: LottieCompletionBlock?) {
+  init(onStartBlock: LottieBlock?, completionBlock: LottieCompletionBlock?) {
+    self.onStartBlock = onStartBlock
     self.completionBlock = completionBlock
     super.init()
   }
@@ -47,6 +52,11 @@ class AnimationCompletionDelegate: NSObject, CAAnimationDelegate {
   var animationState: AnimationContextState = .playing
   
   let completionBlock: LottieCompletionBlock?
+  let onStartBlock: LottieBlock?
+    
+  func animationDidStart(_ anim: CAAnimation) {
+    onStartBlock?()
+  }
   
   public func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
     guard ignoreDelegate == false else { return }

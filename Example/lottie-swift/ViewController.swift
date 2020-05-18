@@ -149,6 +149,9 @@ class ViewController: UIViewController {
     animationView.play(fromProgress: 0,
                        toProgress: 1,
                        loopMode: LottieLoopMode.playOnce,
+                       onStart: {
+                        print("Animation Started")
+    },
                        completion: { (finished) in
                         if finished {
                           print("Animation Complete")
