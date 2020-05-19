@@ -55,6 +55,7 @@ class AnimationCompletionDelegate: NSObject, CAAnimationDelegate {
   let onStartBlock: LottieBlock?
     
   func animationDidStart(_ anim: CAAnimation) {
+    guard ignoreDelegate == false else { return }
     onStartBlock?()
   }
   
