@@ -257,6 +257,7 @@ final public class AnimationView: LottieView {
   /**
    Plays the animation from its current state to the end.
    
+   - Parameter onStart: An optional closure to be called when the animation starts playing
    - Parameter completion: An optional completion closure to be called when the animation completes playing.
    */
   public func play(onStart: LottieBlock? = nil, completion: LottieCompletionBlock? = nil) {
@@ -279,6 +280,7 @@ final public class AnimationView: LottieView {
    - Parameter fromProgress: The start progress of the animation. If `nil` the animation will start at the current progress.
    - Parameter toProgress: The end progress of the animation.
    - Parameter loopMode: The loop behavior of the animation. If `nil` the view's `loopMode` property will be used.
+   - Parameter onStart: An optional closure to be called when the animation starts playing
    - Parameter completion: An optional completion closure to be called when the animation stops.
    */
   public func play(fromProgress: AnimationProgressTime? = nil,
@@ -308,6 +310,7 @@ final public class AnimationView: LottieView {
    - Parameter fromFrame: The start frame of the animation. If `nil` the animation will start at the current frame.
    - Parameter toFrame: The end frame of the animation.
    - Parameter loopMode: The loop behavior of the animation. If `nil` the view's `loopMode` property will be used.
+   - Parameter onStart: An optional closure to be called when the animation starts playing
    - Parameter completion: An optional completion closure to be called when the animation stops.
    */
   public func play(fromFrame: AnimationFrameTime? = nil,
@@ -340,6 +343,7 @@ final public class AnimationView: LottieView {
    animation will start at the current progress.
    - Parameter toMarker: The end marker for the animation playback.
    - Parameter loopMode: The loop behavior of the animation. If `nil` the view's `loopMode` property will be used.
+   - Parameter onStart: An optional closure to be called when the animation starts playing
    - Parameter completion: An optional completion closure to be called when the animation stops.
    */
   public func play(fromMarker: String? = nil,
